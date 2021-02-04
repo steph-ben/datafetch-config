@@ -34,6 +34,7 @@ for f in flow_list:
     f.storage = GitHub(
         repo="steph-ben/datafetch-config",  # name of repo
         ref="laptop",
+        # FIXME : add flow_name argument to prefect code
         path="laptop/s3_gfs_flow.py",  # location of flow file in repo
         secrets=["GITHUB_ACCESS_TOKEN"]  # name of personal access token secret
     )
