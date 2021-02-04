@@ -40,7 +40,7 @@ for flow in flow_list:
     # Configure how this code will be executed
     # In this case, prefect will run this inside a docker container
     flow.run_config = DockerRun(
-        #image="stephben/datafetch"
+        image="stephben/datafetch"
     )
 
 
