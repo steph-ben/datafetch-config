@@ -17,7 +17,7 @@ prefect_project_name = "laptop-gfs-project"
 
 settings = {
     'flow_name': "fetch-gfs",
-    'timesteps': [0, 1, 2, 3, 4, 5, 6],
+    'timesteps': [0, 1],
     'max_concurrent_download': 5,
     'download_dir': "/tmp/laptop/s3/gfs",
     #'post_flowrun': StartFlowRun(flow_name="gfs-post-processing", project_name=prefect_project_name)
