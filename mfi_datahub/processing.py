@@ -29,7 +29,7 @@ with prefect.Flow("gfs-post-processing") as flow:
 if __name__ == "__main__":
     fp = Path(__file__)
     flow.storage = GitHub(
-        repo="steph-ben/datafetch/config",
+        repo="steph-ben/datafetch-config",
         ref="laptop",
         path="mfi_datahub/processing.py",
         secrets=["GITHUB_ACCESS_TOKEN"]
