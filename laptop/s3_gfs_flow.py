@@ -28,10 +28,10 @@ flow_nwp_00 = create_flow_download(run=00, **settings)
 flow_nwp_12 = create_flow_download(run=12, **settings)
 
 flow_list = [flow_nwp_00, flow_nwp_12]
-for flow in flow_list:
+for f in flow_list:
     # Configure how this code will be passed to the prefect agents
     # In this case, prefect will get this file from github
-    flow.storage = GitHub(
+    f.storage = GitHub(
         repo="steph-ben/datafetch-config",  # name of repo
         ref="laptop",
         path="laptop/s3_gfs_flow.py",  # location of flow file in repo
@@ -40,7 +40,7 @@ for flow in flow_list:
 
     # Configure how this code will be executed
     # In this case, prefect will run this inside a docker container
-    flow.run_config = DockerRun(
+    f.run_config = DockerRun(
         image="stephben/datafetch"
     )
 
@@ -48,8 +48,8 @@ for flow in flow_list:
 def main(cmd):
     if cmd in ("register", "trigger"):
         # Ensure the flow is well registered in prefect server
-        for flow in flow_list:
-            r = flow.register(
+        for f in flow_list:
+            r = f.register(
                 project_name=prefect_project_name,
                 labels=["docker"]
             )
