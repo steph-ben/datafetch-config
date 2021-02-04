@@ -24,8 +24,8 @@ settings = {
 }
 
 # Create a prefect's flow object with some configuration
-flow_nwp_00 = create_flow_download(run=00, **settings)
 flow_nwp_12 = create_flow_download(run=12, **settings)
+flow_nwp_00 = create_flow_download(run=00, **settings)
 
 flow_list = [flow_nwp_00, flow_nwp_12]
 for f in flow_list:
