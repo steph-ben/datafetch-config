@@ -19,7 +19,7 @@ settings = {
     'download_dir': "/data/hub/in/NOAA_GFS_FULL",
     'post_flowrun': StartFlowRun(
         flow_name="gfs-post-processing",
-        prefect_project_name=prefect_project_name
+        project_name=prefect_project_name
     )
 }
 
