@@ -33,7 +33,7 @@ for flow in flow_list:
     # In this case, prefect will get this file from github
     flow.storage = GitHub(
         repo="steph-ben/datafetch-config",  # name of repo
-        ref="laptop",
+        ref="master",
         path="mfi_datahub/s3_gfs_flow.py",  # location of flow file in repo
         secrets=["GITHUB_ACCESS_TOKEN"]  # name of personal access token secret
     )
