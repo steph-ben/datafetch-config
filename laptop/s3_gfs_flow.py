@@ -17,38 +17,48 @@ prefect_project_name = "laptop-gfs-project"
 
 settings = {
     'flow_name': "fetch-gfs",
-    'timesteps': [0, 1, 2, 3, 4, 5, 6],
+    'timesteps': [0, 1],
     'max_concurrent_download': 5,
     'download_dir': "/tmp/laptop/s3/gfs",
-    #'post_flowrun': StartFlowRun(flow_name="gfs-post-processing", project_name=prefect_project_name)
+    'post_flowrun': StartFlowRun(flow_name="gfs-post-processing", project_name=prefect_project_name)
 }
 
 # Create a prefect's flow object with some configuration
-flow_nwp_00 = create_flow_download(run=00, **settings)
 flow_nwp_12 = create_flow_download(run=12, **settings)
+flow_nwp_00 = create_flow_download(run=00, **settings)
 
-flow_list = [flow_nwp_00]
-for flow in flow_list:
-    # Configure how this code will be passed to the prefect agents
-    # In this case, prefect will get this file from github
-    flow.storage = GitHub(
-        repo="steph-ben/datafetch-config",  # name of repo
-        path="laptop/s3_gfs_flow.py",  # location of flow file in repo
-        secrets=["GITHUB_ACCESS_TOKEN"]  # name of personal access token secret
-    )
+flow_list = [flow_nwp_00, flow_nwp_12]
+use_github = False
+if use_github:
+    for f in flow_list:
+        # Configure how this code will be passed to the prefect agents
+        # In this case, prefect will get this file from github
+        f.storage = GitHub(
+            repo="steph-ben/datafetch-config",  # name of repo
+            ref="laptop",
+            # FIXME : add flow_name argument to prefect code
+            path="laptop/s3_gfs_flow.py",  # location of flow file in repo
+            secrets=["GITHUB_ACCESS_TOKEN"]  # name of personal access token secret
+        )
 
-    # Configure how this code will be executed
-    # In this case, prefect will run this inside a docker container
-    flow.run_config = DockerRun(
-        image="stephben/datafetch"
-    )
+        # Configure how this code will be executed
+        # In this case, prefect will run this inside a docker container
+        f.run_config = DockerRun(
+            image="stephben/datafetch"
+        )
 
 
 def main(cmd):
     if cmd in ("register", "trigger"):
         # Ensure the flow is well registered in prefect server
-        for flow in flow_list:
-            r = flow.register(project_name=prefect_project_name, labels=["docker"])
+        for f in flow_list:
+            labels = []
+            if use_github:
+                labels = ["docker"]
+            r = f.register(
+                project_name=prefect_project_name,
+                labels=labels
+            )
             print(r)
 
     if cmd == "trigger":

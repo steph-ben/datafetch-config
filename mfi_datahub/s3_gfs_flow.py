@@ -8,7 +8,7 @@ from prefect.storage import GitHub, Docker
 
 from datafetch.s3.flows import create_flow_download
 from datafetch.utils import trigger_prefect_flow
-
+from prefect.tasks.prefect import StartFlowRun
 
 prefect_project_name = "gfs"
 
@@ -16,7 +16,11 @@ settings = {
     'flow_name': "fetch-gfs",
     'timesteps': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 21, 24],
     'max_concurrent_download': 5,
-    'download_dir': "/data/hub/in/NOAA_GFS_FULL"
+    'download_dir': "/data/hub/in/NOAA_GFS_FULL",
+    'post_flowrun': StartFlowRun(
+        flow_name="gfs-post-processing",
+        project_name=prefect_project_name
+    )
 }
 
 # Create a prefect's flow object with some configuration
@@ -29,6 +33,7 @@ for flow in flow_list:
     # In this case, prefect will get this file from github
     flow.storage = GitHub(
         repo="steph-ben/datafetch-config",  # name of repo
+        ref="laptop",
         path="mfi_datahub/s3_gfs_flow.py",  # location of flow file in repo
         secrets=["GITHUB_ACCESS_TOKEN"]  # name of personal access token secret
     )
