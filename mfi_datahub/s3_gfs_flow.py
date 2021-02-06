@@ -3,6 +3,7 @@ GFS flow for downloading on MFI datahub
 """
 import sys
 
+from prefect.engine.results import PrefectResult
 from prefect.run_configs import DockerRun
 from prefect.storage import GitHub, Docker
 
@@ -43,6 +44,12 @@ for flow in flow_list:
     flow.run_config = DockerRun(
         image="stephben/datafetch"
     )
+
+    # Configure where tasks status will be stored
+    # See :
+    #   - https://docs.prefect.io/core/concepts/results.html
+    #   - https://docs.prefect.io/core/advanced_tutorials/using-results.html
+    flow.result = PrefectResult()
 
 
 def main(cmd):
