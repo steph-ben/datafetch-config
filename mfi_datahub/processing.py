@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import prefect
+from prefect.engine.results import PrefectResult
 from prefect.run_configs import DockerRun
 from prefect.storage import GitHub, Docker
 
@@ -17,7 +18,7 @@ def processing2(fp: str):
     logger.info(f"Doing some processing2 on {fp} ...")
 
 
-with prefect.Flow("gfs-post-processing") as flow:
+with prefect.Flow("gfs-post-processing", result=PrefectResult()) as flow:
     fp = prefect.Parameter("fp")
 
     p1 = processing1(fp)
@@ -25,12 +26,11 @@ with prefect.Flow("gfs-post-processing") as flow:
     p2.set_upstream(p1)
 
 
-
 if __name__ == "__main__":
     fp = Path(__file__)
     flow.storage = GitHub(
         repo="steph-ben/datafetch-config",
-        ref="laptop",
+        ref="master",
         path="mfi_datahub/processing.py",
         secrets=["GITHUB_ACCESS_TOKEN"]
     )
