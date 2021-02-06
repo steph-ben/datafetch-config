@@ -114,5 +114,6 @@ prefect agent docker start -f --log-level DEBUG  -l docker --volume /data:/data
 Now that server and agent are ready to use, you can register your flow
 
 ```shell
-python mfi_datahub/s3_gfs_flow.py register
+prefect register flow --file ./s3_gfs_flow.py --name fetch-gfs-run12 -p gfs -l docker
+prefect run flow --name fetch-gfs-run12 -p gfs --watch
 ```
