@@ -37,6 +37,6 @@ flow.storage = GitHub(
 flow.run_config = DockerRun()
 
 
-if __name__ == "__main__":
-    from datafetch.utils import show_prefect_cli_helper
-    show_prefect_cli_helper(flow_list=[flow])
+#if __name__ == "__main__":
+#    from datafetch.utils import show_prefect_cli_helper
+#    show_prefect_cli_helper(flow_list=[flow])
