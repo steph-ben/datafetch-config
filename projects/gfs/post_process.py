@@ -33,7 +33,7 @@ print(f"Registering Using GitHub repo ref {repo_ref}")
 flow.storage = GitHub(
     repo="steph-ben/datafetch-config",
     ref=repo_ref,
-    path="projects/gfs/post_processing.py",
+    path="projects/gfs/post_process.py",
     secrets=["GITHUB_ACCESS_TOKEN"]
 )
 flow.run_config = DockerRun()
