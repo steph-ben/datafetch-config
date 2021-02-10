@@ -1,9 +1,11 @@
-from pathlib import Path
+import os
 
 import prefect
 from prefect.engine.results import PrefectResult
 from prefect.run_configs import DockerRun
 from prefect.storage import GitHub, Docker
+
+from datafetch.utils import show_prefect_cli_helper
 
 
 @prefect.task
@@ -26,19 +28,16 @@ with prefect.Flow("gfs-post-processing", result=PrefectResult()) as flow:
     p2.set_upstream(p1)
 
 
+repo_ref = os.getenv("DATAFETCH__STORAGE__REPO__REF", default="master")
+print(f"Registering Using GitHub repo ref {repo_ref}")
+flow.storage = GitHub(
+    repo="steph-ben/datafetch-config",
+    ref=repo_ref,
+    path="projects/gfs/post_processing.py",
+    secrets=["GITHUB_ACCESS_TOKEN"]
+)
+flow.run_config = DockerRun()
+
+
 if __name__ == "__main__":
-    fp = Path(__file__)
-    flow.storage = GitHub(
-        repo="steph-ben/datafetch-config",
-        ref="master",
-        path="mfi_datahub/processing.py",
-        secrets=["GITHUB_ACCESS_TOKEN"]
-    )
-    flow.run_config = DockerRun()
-    # flow.storage = Docker(
-    #     stored_as_script=True,
-    #     files={fp.absolute(): f"/flow/{fp.name}"},  # Copy current file to container
-    #     path=f"/flow/{fp.name}",  # Use this file for running the flow
-    #     build_kwargs={'nocache': False}
-    # )
-    r = flow.register(project_name="gfs", labels=["docker"])
+    show_prefect_cli_helper(flow_list=[flow])
