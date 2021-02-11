@@ -15,7 +15,7 @@ with prefect.Flow(
         result=PrefectResult(),
         run_config=DockerRun(image="dockhub.mfi.local:5000/stephben/grib-subset:latest")
         ) as flow:
-    fp = prefect.Parameter("fp", default="plop")
+    fp = prefect.Parameter("fp")
     command = formatter(template="fetch_s-atl_wind10m.sh {fp}", fp=fp)
     subset = task(command=command)
 
