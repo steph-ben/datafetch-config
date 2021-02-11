@@ -7,7 +7,7 @@ from prefect.storage import GitHub
 from prefect.tasks.shell import ShellTask
 from prefect.tasks.templates import StringFormatter
 
-task = ShellTask(log_stdout=True, log_stderr=True)
+task = ShellTask(log_stdout=True, log_stderr=True, stream_output=True)
 formatter = StringFormatter()
 
 with prefect.Flow(
