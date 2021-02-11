@@ -10,7 +10,7 @@ from prefect.storage import GitHub
 from prefect.tasks.prefect import StartFlowRun
 
 from datafetch.weather.noaa.nwp.flows import create_flow_download
-from datafetch.utils.prefect import show_prefect_cli_helper
+from datafetch.utils import show_prefect_cli_helper
 
 logger = logging.getLogger(__name__)
 
