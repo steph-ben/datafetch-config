@@ -67,20 +67,21 @@ Working great ? Now let's run it inside prefect server
 
 ```shell
 # Needed once
-$ prefect create project "gfs-fetcher"
+$ prefect create project "gfs"
+
 
 # Interacting with Prefect !
-$ prefect register flow --file projects/gfs/fetch.py --name fetch-gfs-run0 --project gfs-fetcher --label docker
+$ prefect register flow --file projects/gfs/fetch.py --name fetch-gfs-run0 --project gfs --label testing
+Registering Using GitHub repo ref master
 Result check: OK
-Flow URL: http://localhost:8080/default/flow/ec5a906b-6b03-46ce-b7d8-b02e73d30d98
- └── ID: 7f049f56-2c6d-49b4-8515-658b43850764
- └── Project: gfs-fetcher
- └── Labels: ['steph-laptop']
-7f049f56-2c6d-49b4-8515-658b43850764
+Flow URL: http://localhost:8080/default/flow/9235a237-f6bc-41c7-89bc-132db233b49e
+ └── ID: 73ed9cc2-90af-467f-9be1-0b57a320242c
+ └── Project: gfs
+ └── Labels: ['testing']
 
-$ prefect run flow --name fetch-gfs-run0 --project gfs-fetcher --logs
-A new FlowRun has been triggered
-Go check it on http://linux:8080/flow-run/1829c2f9-a5f4-43c4-ad3e-bd42a80068ea
+
+$ prefect run flow --name fetch-gfs-run0 --project gfs --logs
+
 ```
 
 Enjoy the view !
